@@ -16,6 +16,6 @@ defined( 'ABSPATH' ) || exit;
 define( 'FX_VERSION', '1.0.0' );
 define( 'FX_PATH', dirname( __FILE__ ) );
 
-require_once FX_PATH . '/inc/class-fx-settings.php';
+require_once FX_PATH . '/includes/class-fx-settings.php';
 
 FX_Settings::factory();
