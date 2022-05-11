@@ -143,6 +143,9 @@ class Modern_Events_Calendar_Extend {
 			'hide_empty' => false,
 		) );
 
+		$event_link = get_post_meta( $event_id, 'mec_read_more', true );
+		$referal_link = get_post_meta( $event_id, 'mec_more_info', true );
+
 		$update_data = array(
 			'first_name'      => $firstname,
 			'last_name'       => $lastname,
@@ -150,11 +153,14 @@ class Modern_Events_Calendar_Extend {
 			'event_name'      => get_the_title( $event_id ),
 			'event_date' 	  => $start_date,
 			'event_time'      => $start_time,
+			'last_name2'       => $attendees[$attendee_id]['reg'][1],
             'attendee_tel'    => $attendees[$attendee_id]['reg'][3],
 			'event_organizer' => $organizer->name,
 			'event_category'  => $event_terms_category[0]->name,
 			'event_location'  => $location->name,
 			'event_label'     => $event_terms_label[0]->name,
+			'event_link'      => $event_link,
+			'event_referal_link' => $referal_link,
 		);
 
 		return $update_data;
@@ -182,7 +188,8 @@ class Modern_Events_Calendar_Extend {
 			'taxonomy' => 'mec_label',
 			'hide_empty' => false,
 		) );
-		// var_dump( $terms[0]->name );
+		$event_link = get_post_meta( $post->ID, 'mec_more_info', true );
+		// var_dump( $event_link );
 	}
 
     /**
@@ -191,6 +198,12 @@ class Modern_Events_Calendar_Extend {
      * @since 1.0
      */
     public function prepare_meta_fields_extend( $meta_fields ) {
+
+		$meta_fields['last_name2'] = array(
+			'label' => 'Last Name',
+			'type'  => 'text',
+			'group' => 'modern_events_event',
+		);
 
         $meta_fields['attendee_tel'] = array(
 			'label' => 'Telephone',
@@ -218,6 +231,18 @@ class Modern_Events_Calendar_Extend {
 
 		$meta_fields['event_label'] = array(
 			'label' => 'Label',
+			'type'  => 'text',
+			'group' => 'modern_events_event',
+		);
+
+		$meta_fields['event_link'] = array(
+			'label' => 'Source URL',
+			'type'  => 'text',
+			'group' => 'modern_events_event',
+		);
+
+		$meta_fields['event_referal_link'] = array(
+			'label' => 'Referal URL',
 			'type'  => 'text',
 			'group' => 'modern_events_event',
 		);
