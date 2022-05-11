@@ -115,17 +115,18 @@ class Modern_Events_Calendar_Extend {
 		$start_time .= sprintf( '%02d', $start_time_minutes ) . ' ';
 		$start_time .= $start_time_ampm;
 
-		$names = explode( ' ', $attendees[ $attendee_id ]['name'] );
+		// $names = explode( ' ', $attendees[ $attendee_id ]['name'] );
 
-		$firstname = $names[0];
+		// $firstname = $names[0];
+		$firstname = $attendees[ $attendee_id ]['name'];
 
-		unset( $names[0] );
+		// unset( $names[0] );
 
-		if ( ! empty( $names ) ) {
-			$lastname = implode( ' ', $names );
-		} else {
-			$lastname = '';
-		}
+		// if ( ! empty( $names ) ) {
+		// 	$lastname = implode( ' ', $names );
+		// } else {
+		// 	$lastname = '';
+		// }
 
 		$organizer_id = get_post_meta($event_id, 'mec_organizer_id', true);
 		$organizer = get_term( $organizer_id );
@@ -153,7 +154,7 @@ class Modern_Events_Calendar_Extend {
 			'event_name'      => get_the_title( $event_id ),
 			'event_date' 	  => $start_date,
 			'event_time'      => $start_time,
-			'last_name2'      => $attendees[$attendee_id]['reg'][2],
+			'surname'         => $attendees[$attendee_id]['reg'][4],
             'attendee_tel'    => $attendees[$attendee_id]['reg'][3],
 			'event_organizer' => $organizer->name,
 			'event_category'  => $event_terms_category[0]->name,
@@ -199,7 +200,7 @@ class Modern_Events_Calendar_Extend {
      */
     public function prepare_meta_fields_extend( $meta_fields ) {
 
-		$meta_fields['last_name2'] = array(
+		$meta_fields['surname'] = array(
 			'label' => 'Last Name',
 			'type'  => 'text',
 			'group' => 'modern_events_event',
