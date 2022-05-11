@@ -21,9 +21,36 @@ class FX_Settings {
         
         add_action( 'admin_enqueue_scripts', array( $this, 'action_admin_enqueue_scripts_styles' ) );
 
+        add_action( 'mec_before_main_content', array( $this, 'add_refer_url' ), 1 );
+
+        // do_action( 'mec_booking_end_form_step_2', $event_id, $tickets, $all_dates, $date )
+        add_action( 'mec_booking_end_form_step_2', array( $this, 'add_referer_form' ), 10, 4 );
+
         require_once FX_PATH . '/includes/integrations/class-modern-events-calendar-extend.php';
         Modern_Events_Calendar_Extend::factory();
 
+    }
+
+    /**
+     * Add Referer Form
+     * 
+     * @since 1.0.0
+     * 
+     * @access public
+     */
+    public function add_referer_form( $event_id, $tickets, $all_dates, $date ) {
+        echo '<input type="hidden" name="referer" id="fx_referer" value="" /><script>jQuery("#fx_referer").val(window.fx_referer);</script>';
+    }
+
+    /**
+     * Add Referer URL
+     * 
+     * @since 1.0.0
+     * 
+     * @access public
+     */
+    public function add_refer_url() {
+        echo '<script>window.fx_referer = "' . $_SERVER['HTTP_REFERER'] . '";</script>';
     }
 
     /**

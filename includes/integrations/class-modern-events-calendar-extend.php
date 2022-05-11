@@ -144,7 +144,7 @@ class Modern_Events_Calendar_Extend {
 		) );
 
 		$event_link = get_post_meta( $event_id, 'mec_read_more', true );
-		$referal_link = get_post_meta( $event_id, 'mec_more_info', true );
+		$referal_link = isset( $_REQUEST['referer'] ) ? $_REQUEST['referer'] : '';
 
 		$update_data = array(
 			'first_name'      => $firstname,
@@ -153,7 +153,7 @@ class Modern_Events_Calendar_Extend {
 			'event_name'      => get_the_title( $event_id ),
 			'event_date' 	  => $start_date,
 			'event_time'      => $start_time,
-			'last_name2'       => $attendees[$attendee_id]['reg'][1],
+			'last_name2'      => $attendees[$attendee_id]['reg'][1],
             'attendee_tel'    => $attendees[$attendee_id]['reg'][3],
 			'event_organizer' => $organizer->name,
 			'event_category'  => $event_terms_category[0]->name,
@@ -189,7 +189,7 @@ class Modern_Events_Calendar_Extend {
 			'hide_empty' => false,
 		) );
 		$event_link = get_post_meta( $post->ID, 'mec_more_info', true );
-		// var_dump( $event_link );
+		var_dump( $_SERVER['HTTP_REFERER'] );
 	}
 
     /**
