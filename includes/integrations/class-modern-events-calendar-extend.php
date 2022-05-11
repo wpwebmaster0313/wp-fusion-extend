@@ -153,7 +153,7 @@ class Modern_Events_Calendar_Extend {
 			'event_name'      => get_the_title( $event_id ),
 			'event_date' 	  => $start_date,
 			'event_time'      => $start_time,
-			'last_name2'      => $attendees[$attendee_id]['reg'][1],
+			'last_name2'      => $attendees[$attendee_id]['reg'][2],
             'attendee_tel'    => $attendees[$attendee_id]['reg'][3],
 			'event_organizer' => $organizer->name,
 			'event_category'  => $event_terms_category[0]->name,
