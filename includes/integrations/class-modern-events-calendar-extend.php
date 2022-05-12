@@ -115,25 +115,21 @@ class Modern_Events_Calendar_Extend {
 		$start_time .= sprintf( '%02d', $start_time_minutes ) . ' ';
 		$start_time .= $start_time_ampm;
 
-		// $names = explode( ' ', $attendees[ $attendee_id ]['name'] );
+		$names = explode( ' ', $attendees[ $attendee_id ]['name'] );
 
 		// $firstname = $names[0];
 		$firstname = $attendees[ $attendee_id ]['name'];
 
-		// unset( $names[0] );
+		unset( $names[0] );
 
-		// if ( ! empty( $names ) ) {
-		// 	$lastname = implode( ' ', $names );
-		// } else {
-		// 	$lastname = '';
-		// }
+		if ( ! empty( $names ) ) {
+			$lastname = implode( ' ', $names );
+		} else {
+			$lastname = '';
+		}
 
 		$organizer_id = get_post_meta($event_id, 'mec_organizer_id', true);
 		$organizer = get_term( $organizer_id );
-		
-		// $mec_categories = get_categories( array(
-		// 	'taxonomy' => 'mec_category'
-		// ) );
 
 		$mec_categories = get_the_terms( $event_id, 'mec_category' );
 		if ( ! $mec_categories || is_wp_error( $mec_categories ) ) {
@@ -187,7 +183,7 @@ class Modern_Events_Calendar_Extend {
 
 		$update_data = array(
 			'first_name'      => $firstname,
-			// 'last_name'       => $lastname,
+			'last_name'       => $lastname,
 			'user_email'      => $attendees[ $attendee_id ]['email'],
 			'event_name'      => get_the_title( $event_id ),
 			'event_date' 	  => $start_date,
@@ -221,15 +217,7 @@ class Modern_Events_Calendar_Extend {
      * @param object $post
      */
     public function meta_box_organizer($post) {
-		$location_id = get_post_meta($post->ID, 'mec_location_id', true);
-		$location = get_term( $location_id );
-		$event_terms_category = get_terms( array(
-			'taxonomy' => 'mec_category',
-			'parent'   => 0,
-		) );
-		$event_link = get_post_meta( $post->ID, 'mec_more_info', true );
-		$categories = get_the_category();
-		// var_dump( $categories );
+		// Here, you can test the MEC meta box values.
 	}
 
     /**
