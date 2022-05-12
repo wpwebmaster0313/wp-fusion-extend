@@ -130,57 +130,19 @@ class Modern_Events_Calendar_Extend {
 
 		$organizer_id = get_post_meta($event_id, 'mec_organizer_id', true);
 		$organizer = get_term( $organizer_id );
-		
-		// $mec_categories = get_categories( array(
-		// 	'taxonomy' => 'mec_category'
-		// ) );
 
-		$mec_categories = get_the_terms( $event_id, 'mec_category' );
-		if ( ! $mec_categories || is_wp_error( $mec_categories ) ) {
-			$mec_categories = array();
-		}
-	
-		$mec_categories = array_values( $mec_categories );
-	
-		foreach ( array_keys( $mec_categories ) as $key ) {
-			_make_cat_compat( $mec_categories[ $key ] );
-		}
-
-		$categories_str = '';
-		$category_offset = 0;
-		foreach ( $mec_categories as $mec_category ) {
-			if ( $category_offset > 0 ) {
-				$categories_str .= ', ' . $mec_category->name;
-			} else {
-				$categories_str .= $mec_category->name;
-			}
-			$category_offset++;
-		}
-
-		$mec_labels = get_the_terms( $event_id, 'mec_label' );
-		if ( ! $mec_labels || is_wp_error( $mec_labels ) ) {
-			$mec_labels = array();
-		}
-	
-		$mec_labels = array_values( $mec_labels );
-
-		foreach ( array_keys( $mec_labels ) as $key ) {
-			_make_cat_compat( $mec_labels[ $key ] );
-		}
-
-		$labels_str = '';
-		$label_offset = 0;
-		foreach ( $mec_labels as $mec_label ) {
-			if ( $label_offset > 0 ) {
-				$labels_str .= ', ' . $mec_label->name;
-			} else {
-				$labels_str .= $mec_label->name;
-			}
-			$label_offset++;
-		}
+		$event_terms_category = get_terms( array(
+			'taxonomy' => 'mec_category',
+			'parent'   => 0,
+		) );
 
 		$location_id = get_post_meta($event_id, 'mec_location_id', true);
 		$location = get_term( $location_id );
+
+		$event_terms_label = get_terms( array(
+			'taxonomy' => 'mec_label',
+			'hide_empty' => false,
+		) );
 
 		$event_link = get_post_meta( $event_id, 'mec_read_more', true );
 		$referal_link = isset( $_REQUEST['referer'] ) ? $_REQUEST['referer'] : '';
@@ -192,12 +154,12 @@ class Modern_Events_Calendar_Extend {
 			'event_name'      => get_the_title( $event_id ),
 			'event_date' 	  => $start_date,
 			'event_time'      => $start_time,
-			'surname'         => $attendees[$attendee_id]['reg'][4],
-            'attendee_tel'    => $attendees[$attendee_id]['reg'][3],
+			'surname'         => $attendees[$attendee_id]['reg'][5],
+            'attendee_tel'    => $attendees[$attendee_id]['reg'][2],
 			'event_organizer' => $organizer->name,
-			'event_category'  => $categories_str,
+			'event_category'  => $event_terms_category[1]->name,
 			'event_location'  => $location->name,
-			'event_label'     => $labels_str,
+			'event_label'     => $event_terms_label[0]->name,
 			'event_link'      => $event_link,
 			'event_referal_link' => $referal_link,
 		);
@@ -223,13 +185,12 @@ class Modern_Events_Calendar_Extend {
     public function meta_box_organizer($post) {
 		$location_id = get_post_meta($post->ID, 'mec_location_id', true);
 		$location = get_term( $location_id );
-		$event_terms_category = get_terms( array(
-			'taxonomy' => 'mec_category',
-			'parent'   => 0,
+		$terms = get_terms( array(
+			'taxonomy' => 'mec_label',
+			'hide_empty' => false,
 		) );
 		$event_link = get_post_meta( $post->ID, 'mec_more_info', true );
-		$categories = get_the_category();
-		// var_dump( $categories );
+		var_dump( $_SERVER['HTTP_REFERER'] );
 	}
 
     /**
