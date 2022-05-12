@@ -193,7 +193,7 @@ class Modern_Events_Calendar_Extend {
 			'event_date' 	  => $start_date,
 			'event_time'      => $start_time,
 			'surname'         => $attendees[$attendee_id]['reg'][5],
-                        'attendee_tel'    => $attendees[$attendee_id]['reg'][2],
+			'attendee_tel'    => $attendees[$attendee_id]['reg'][2],
 			'event_organizer' => $organizer->name,
 			'event_category'  => $categories_str,
 			'event_location'  => $location->name,
