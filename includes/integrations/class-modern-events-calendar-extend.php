@@ -12,6 +12,23 @@ defined( 'ABSPATH' ) || exit;
  */
 class Modern_Events_Calendar_Extend {
 
+	/**
+	 * The slug for WP Fusion's module tracking.
+	 *
+	 * @since 1.0.0
+	 * @var string $slug
+	 */
+
+	public $slug = 'modern-events-calendar';
+
+	/**
+	 * The plugin name for WP Fusion's module tracking.
+	 *
+	 * @since 1.0.0
+	 * @var string $name
+	 */
+	public $name = 'Modern events calendar';
+
     /**
      * Setup the plugin
      * 
@@ -20,7 +37,7 @@ class Modern_Events_Calendar_Extend {
     public function init() {
 		add_action( 'init', array( $this, 'test_function') );
         // Sync data and apply tags when a booking is placed
-		add_action( 'mec_booking_added', array( $this, 'booking_added_extend' ) );
+		add_action( 'mec_booking_added', array( $this, 'booking_added_extend' ), 20 );
 
         // Register fields for sync
         add_filter( 'wpf_meta_fields', array( $this, 'prepare_meta_fields_extend' ), 30 );
@@ -183,16 +200,11 @@ class Modern_Events_Calendar_Extend {
 
 		$update_data = array(
 			'first_name'      => $firstname,
-			'last_name'       => $lastname,
-			'user_email'      => $attendees[ $attendee_id ]['email'],
-			'event_name'      => get_the_title( $event_id ),
-			'event_date' 	  => $start_date,
-			'event_time'      => $start_time,
-			'surname'         => $attendees[$attendee_id]['reg'][5],
-			'attendee_tel'    => $attendees[$attendee_id]['reg'][2],
+			'surname'         => $attendees[$attendee_id]['reg'][4],
+			'attendee_tel'    => $attendees[$attendee_id]['reg'][3],
 			'event_organizer' => $organizer->name,
 			'event_category'  => $categories_str,
-			'event_location'  => $location->name,
+			'event_location'  => $location->name ? $location->name : '',
 			'event_label'     => $labels_str,
 			'event_link'      => $event_link,
 			'event_referal_link' => $referal_link,
@@ -299,7 +311,7 @@ class Modern_Events_Calendar_Extend {
 			$log_text = ' Creating new contact: ';
 		}
 
-		wpf_log( 'info', 0, $this->name . ' guest registration.' . $log_text, array( 'meta_array' => $update_data ) );
+		wpf_log( 'info', 0, $this->name . ' extend guest registration.' . $log_text, array( 'meta_array' => $update_data ) );
 
 		if ( empty( $contact_id ) ) {
 
@@ -318,7 +330,7 @@ class Modern_Events_Calendar_Extend {
 
 		if ( is_wp_error( $contact_id ) ) {
 
-			wpf_log( $contact_id->get_error_code(), 0, 'Error adding contact: ' . $contact_id->get_error_message() );
+			wpf_log( $contact_id->get_error_code(), 0, 'Error adding contact ( Extend ): ' . $contact_id->get_error_message() );
 			return false;
 
 		}
