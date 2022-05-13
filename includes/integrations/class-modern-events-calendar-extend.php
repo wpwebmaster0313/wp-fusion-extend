@@ -192,8 +192,11 @@ class Modern_Events_Calendar_Extend {
 			$label_offset++;
 		}
 
-		$location_id = get_post_meta($event_id, 'mec_location_id', true);
+		$location_id = get_post_meta( $event_id, 'mec_location_id', true );
 		$location = get_term( $location_id );
+		if ( 1 == $location_id ) {
+			$location->name = '';
+		} 
 
 		$event_link = get_post_meta( $event_id, 'mec_read_more', true );
 		$referal_link = isset( $_REQUEST['referer'] ) ? $_REQUEST['referer'] : '';
